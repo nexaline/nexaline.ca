@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexa Line Ltd | Holding & Investment Company</title>
+<meta name="description" content="Nexa Line Ltd is an Alberta holding and investment company that owns assets and builds operating businesses, starting with transportation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1f3a'/%3E%3Cpath d='M18 16 L46 48 M46 16 L18 48' stroke='%23f58220' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1f3a; --navy-2:#13305a; --orange:#f58220; --sky:#5fb4e6;
+  --ink:#14213a; --muted:#5b6678; --line:#e3e8ef; --bg:#f6f8fb; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--white);line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:Montserrat,sans-serif;line-height:1.2}
+.eyebrow{font:700 .78rem Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+
+/* header */
+header{position:sticky;top:0;z-index:10;background:var(--navy);border-bottom:3px solid var(--orange)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:baseline;gap:6px;text-decoration:none;font-family:Montserrat,sans-serif}
+.logo .nexa{font-weight:800;font-size:1.6rem;color:#fff;letter-spacing:.04em}
+.logo .nexa b{color:var(--orange)}
+.logo .lin{font-weight:700;font-size:1.05rem;color:var(--sky);letter-spacing:.22em;text-transform:uppercase}
+nav ul{display:flex;gap:28px;list-style:none}
+nav a{color:#d6e2f2;text-decoration:none;font-weight:500;font-size:.95rem}
+nav a:hover{color:#fff}
+.menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
+
+/* hero */
+.hero{background:radial-gradient(1200px 500px at 85% -10%,rgba(95,180,230,.25),transparent 60%),linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);color:#fff;padding:110px 0 120px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;bottom:-120px;width:420px;height:420px;
+  background:linear-gradient(45deg,transparent 44%,rgba(245,130,32,.18) 44%,rgba(245,130,32,.18) 56%,transparent 56%),
+             linear-gradient(-45deg,transparent 44%,rgba(245,130,32,.18) 44%,rgba(245,130,32,.18) 56%,transparent 56%)}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;max-width:760px;margin:14px 0 20px}
+.hero h1 span{color:var(--sky)}
+.hero p{font-size:1.15rem;color:#c9d6e8;max-width:620px}
+.btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.btn{display:inline-block;padding:14px 26px;border-radius:8px;font-weight:600;text-decoration:none;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff}
+
+/* sections */
+section{padding:90px 0}
+.alt{background:var(--bg)}
+.head{max-width:680px;margin-bottom:46px}
+.head h2{font-size:clamp(1.8rem,3.5vw,2.4rem);margin:10px 0 14px;color:var(--navy)}
+.head p{color:var(--muted);font-size:1.05rem}
+
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pillar{padding:28px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.pillar .num{font:800 1rem Montserrat;color:var(--orange)}
+.pillar h3{margin:10px 0 8px;color:var(--navy);font-size:1.2rem}
+.pillar p{color:var(--muted)}
+
+.companies{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.card{background:#fff;border-radius:16px;padding:32px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(11,31,58,.06);display:flex;flex-direction:column}
+.tag{align-self:flex-start;font:700 .72rem Montserrat;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#e8f4fc;color:#1a6ea3}
+.tag.soon{background:#fff1e4;color:#b55a0c}
+.card h3{font-size:1.4rem;color:var(--navy);margin:16px 0 6px}
+.card .sub{color:var(--orange);font-weight:600;margin-bottom:12px}
+.card p{color:var(--muted);flex:1}
+.card a.link{margin-top:20px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:2px solid var(--orange);align-self:flex-start}
+.card.dashed{border:2px dashed #c6d1df;box-shadow:none;background:transparent}
+
+.assets{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+.asset-list{display:grid;gap:16px}
+.asset{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px}
+.icon{flex:0 0 48px;height:48px;border-radius:12px;background:var(--navy);display:grid;place-items:center}
+.icon svg{width:26px;height:26px;stroke:var(--sky);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.asset h3{font-size:1.05rem;color:var(--navy)}
+.asset p{color:var(--muted);font-size:.95rem}
+.model{background:var(--navy);color:#fff;border-radius:16px;padding:34px}
+.model h3{font-size:1.3rem;margin-bottom:18px}
+.step{display:flex;gap:14px;margin-bottom:18px}
+.step b{flex:0 0 30px;height:30px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font:800 .9rem Montserrat}
+.step p{color:#c9d6e8}
+.step strong{color:#fff}
+
+.invest{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.point{border-top:3px solid var(--orange);padding-top:18px}
+.point h3{font-size:1.05rem;color:var(--navy);margin-bottom:6px}
+.point p{color:var(--muted);font-size:.95rem}
+
+.contact{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;text-align:center}
+.contact h2{font-size:clamp(1.8rem,3.5vw,2.4rem);margin:10px 0 14px}
+.contact p{color:#c9d6e8;max-width:560px;margin:0 auto}
+.contact .btns{justify-content:center}
+
+footer{background:#071629;color:#8ea0b8;font-size:.9rem;padding:28px 0}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media (max-width:860px){
+  .menu-btn{display:block}
+  nav ul{display:none;position:absolute;top:71px;left:0;right:0;background:var(--navy);flex-direction:column;gap:0;padding:8px 0}
+  nav ul.open{display:flex}
+  nav li a{display:block;padding:14px 20px}
+  .pillars,.companies,.assets{grid-template-columns:1fr}
+  .invest{grid-template-columns:1fr 1fr}
+  section{padding:64px 0}
+  .hero{padding:80px 0 90px}
+}
+@media (max-width:520px){.invest{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="Nexa Line Ltd home"><span class="nexa">NE<b>X</b>A</span><span class="lin">Line</span></a>
+    <nav>
+      <button class="menu-btn" aria-label="Open menu" onclick="document.getElementById('menu').classList.toggle('open')">&#9776;</button>
+      <ul id="menu" onclick="this.classList.remove('open')">
+        <li><a href="#about">About</a></li>
+        <li><a href="#companies">Our Companies</a></li>
+        <li><a href="#assets">Assets &amp; Leasing</a></li>
+        <li><a href="#investors">Investors</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="login.html" style="color:#f58220;font-weight:600">Owner Login</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Nexa Line Ltd &middot; Alberta, Canada</div>
+    <h1>We own the assets.<br>We build the <span>businesses.</span></h1>
+    <p>Nexa Line Ltd is a privately held Alberta holding and investment company. We acquire and manage hard assets and launch operating companies that put them to work, starting with transportation.</p>
+    <div class="btns">
+      <a href="#companies" class="btn btn-primary">Our Companies</a>
+      <a href="#investors" class="btn btn-ghost">For Investors</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">About</div>
+      <h2>A parent company built for the long term</h2>
+      <p>Nexa Line sits at the centre of a growing group. It holds the equipment, capital and ownership, while each operating company focuses on serving its customers.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><div class="num">01</div><h3>Asset ownership</h3><p>We buy and own quality equipment outright, keeping our companies lean and our balance sheet strong.</p></div>
+      <div class="pillar"><div class="num">02</div><h3>Equipment leasing</h3><p>Our assets are leased to group companies and trusted partners on clear, fair terms.</p></div>
+      <div class="pillar"><div class="num">03</div><h3>New ventures</h3><p>We start and grow new businesses where we see real demand, in transportation, aviation and beyond.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="companies" class="alt">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Our Companies</div>
+      <h2>The Nexa group</h2>
+      <p>Each company in the group operates independently, backed by Nexa Line's assets and support.</p>
+    </div>
+    <div class="companies">
+      <div class="card">
+        <span class="tag">Operating</span>
+        <h3>Nexa Horse Transport</h3>
+        <div class="sub">Professional horse transportation</div>
+        <p>Safe, comfortable horse hauling coast to coast across Canada and between Western Canada and the United States, based in Sundre, Alberta.</p>
+        <a class="link" href="https://nexahorsetransport.ca" target="_blank" rel="noopener">Visit nexahorsetransport.ca &rarr;</a>
+      </div>
+      <div class="card">
+        <span class="tag soon">Coming soon</span>
+        <h3>Nexa Transport Ltd</h3>
+        <div class="sub">Transportation operating company</div>
+        <p>The operating company for our transportation brands, including Nexa Horse Transport, with plans to grow into livestock, freight and other hauling.</p>
+      </div>
+      <div class="card dashed">
+        <span class="tag soon">Future ventures</span>
+        <h3>What's next</h3>
+        <div class="sub">Aviation and more</div>
+        <p>We are open to new opportunities, from aircraft leasing to flight training partners and other asset-backed businesses.</p>
+        <a class="link" href="#contact">Partner with us &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="assets">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Assets &amp; Leasing</div>
+      <h2>Owned outright, put to work</h2>
+      <p>Nexa Line owns its equipment free and clear and leases it to group companies, so every asset earns its keep.</p>
+    </div>
+    <div class="assets">
+      <div class="asset-list">
+        <div class="asset">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 16V7h11v9M14 10h4l3 3v3h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+          <div><h3>Heavy-duty truck</h3><p>2026 Ford F-350 dually, commercially maintained at a Ford dealer.</p></div>
+        </div>
+        <div class="asset">
+          <div class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="17" height="10" rx="2"/><path d="M19 12h3M6 6v10M10 6v10M14 6v10"/><circle cx="7" cy="18" r="1.5"/><circle cx="13" cy="18" r="1.5"/></svg></div>
+          <div><h3>Six-horse straight-load trailer</h3><p>2026 Four Star trailer, configurable from 6+1 standard stalls to roomier and box-stall layouts.</p></div>
+        </div>
+        <div class="asset">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M2 14l20-6-3 6H9l-4 4H3l2-4z"/><path d="M10 10l-2-5h2l4 4"/></svg></div>
+          <div><h3>Future assets</h3><p>Additional trucks and trailers, and potentially aircraft for lease to flight schools.</p></div>
+        </div>
+      </div>
+      <div class="model">
+        <h3>How our model works</h3>
+        <div class="step"><b>1</b><p><strong>Nexa Line acquires</strong> the equipment and holds ownership.</p></div>
+        <div class="step"><b>2</b><p><strong>Group companies lease</strong> the equipment on fair, per-use terms.</p></div>
+        <div class="step"><b>3</b><p><strong>Operating companies serve</strong> customers and grow their brands.</p></div>
+        <div class="step"><b>4</b><p><strong>Returns are reinvested</strong> into new assets and new ventures.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="investors" class="alt">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Investors &amp; Partners</div>
+      <h2>Grow with us</h2>
+      <p>We welcome conversations with investors, lenders and business partners who share our long-term, asset-backed approach.</p>
+    </div>
+    <div class="invest">
+      <div class="point"><h3>Asset-backed</h3><p>Our equipment is owned outright, giving every venture a solid foundation.</p></div>
+      <div class="point"><h3>Conservative planning</h3><p>We plan on cautious numbers and grow as real demand proves itself.</p></div>
+      <div class="point"><h3>Clear structure</h3><p>A holding company that owns assets, with operating companies that run the business.</p></div>
+      <div class="point"><h3>Canadian first</h3><p>Alberta-registered, and we choose Canadian partners and services wherever we can.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>Let's talk</h2>
+    <p>For investment, leasing or partnership enquiries, send us an email and we'll get back to you.</p>
+    <div class="btns">
+      <a href="mailto:info@nexaline.ca" class="btn btn-primary">info@nexaline.ca</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="y">2026</span> Nexa Line Ltd. All rights reserved.</span>
+    <span>Alberta, Canada</span>
+  </div>
+</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

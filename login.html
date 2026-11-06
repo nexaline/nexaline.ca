@@ -5,30 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Owner Login | Nexa Line Ltd</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1f3a'/%3E%3Cpath d='M18 16 L46 48 M46 16 L18 48' stroke='%23f58220' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;display:grid;place-items:center;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(160deg,#0b1f3a,#13305a);color:#14213a}
-.box{background:#fff;width:100%;max-width:400px;border-radius:16px;padding:36px;border-top:4px solid #f58220;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.box{background:#fff;width:100%;max-width:400px;border-radius:16px;padding:36px 28px;border-top:4px solid #f58220;box-shadow:0 20px 50px rgba(0,0,0,.3)}
 .logo{font-family:Montserrat,sans-serif;text-align:center;margin-bottom:6px}
 .logo .n{font-weight:800;font-size:1.8rem;color:#0b1f3a}.logo .n b{color:#f58220}
 .logo .l{font-weight:700;color:#5fb4e6;letter-spacing:.22em;margin-left:6px}
-h1{font:700 1.1rem Montserrat,sans-serif;text-align:center;color:#0b1f3a;margin-bottom:24px}
+h1{font:700 1.1rem Montserrat,sans-serif;text-align:center;color:#0b1f3a;margin-bottom:22px}
 label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
-input{width:100%;padding:12px 14px;border:1px solid #cfd8e3;border-radius:8px;font:inherit}
-button{width:100%;margin-top:22px;padding:13px;border:0;border-radius:8px;background:#f58220;color:#fff;font:600 1rem Inter,sans-serif;cursor:not-allowed;opacity:.6}
-.note{margin-top:18px;font-size:.85rem;color:#5b6678;text-align:center}
-a{color:#0b1f3a}
+input{width:100%;padding:13px 14px;border:1px solid #cfd8e3;border-radius:8px;font:inherit;font-size:16px}
+input:focus{outline:2px solid #5fb4e6;border-color:#5fb4e6}
+.pw{position:relative}.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:#5b6678;font:600 .8rem Inter;cursor:pointer;padding:6px}
+.go{width:100%;margin-top:22px;padding:14px;border:0;border-radius:8px;background:#f58220;color:#fff;font:600 1rem Inter,sans-serif;cursor:pointer}
+.go:disabled{opacity:.6;cursor:wait}
+.msg{margin-top:14px;font-size:.88rem;text-align:center;min-height:1.2em}
+.msg.err{color:#c0392b}.msg.ok{color:#1e8449}
+.links{margin-top:16px;display:flex;justify-content:space-between;font-size:.85rem}
+.links a,.links button{color:#0b1f3a;background:none;border:0;font:inherit;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
-<div class="box">
+<form class="box" id="f" autocomplete="on">
   <div class="logo"><span class="n">NE<b>X</b>A</span><span class="l">LINE</span></div>
   <h1>Owner Portal</h1>
-  <label for="e">Email</label><input id="e" type="email" disabled>
-  <label for="p">Password</label><input id="p" type="password" disabled>
-  <button disabled>Sign in</button>
-  <p class="note">Secure sign-in is being set up.<br><a href="/">&larr; Back to nexaline.ca</a></p>
-</div>
+  <label for="email">Email</label>
+  <input id="email" type="email" autocomplete="username" required>
+  <label for="pass">Password</label>
+  <div class="pw"><input id="pass" type="password" autocomplete="current-password" required><button type="button" id="show">Show</button></div>
+  <button class="go" id="go" type="submit">Sign in</button>
+  <p class="msg" id="msg" role="status"></p>
+  <div class="links"><a href="/">&larr; nexaline.ca</a><button type="button" id="reset">Forgot password?</button></div>
+</form>
+<script type="module">
+import { auth } from "./js/firebase-init.js";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const $ = id => document.getElementById(id);
+const say = (t, cls) => { $('msg').textContent = t; $('msg').className = 'msg ' + (cls||''); };
+
+onAuthStateChanged(auth, u => { if (u) location.replace('dashboard.html'); });
+
+$('show').onclick = () => { const p=$('pass'); p.type = p.type==='password'?'text':'password'; $('show').textContent = p.type==='password'?'Show':'Hide'; };
+
+$('f').addEventListener('submit', async e => {
+  e.preventDefault(); $('go').disabled = true; say('Signing in…');
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value);
+    location.replace('dashboard.html');
+  } catch (err) {
+    const c = err.code || '';
+    say(c.includes('too-many') ? 'Too many attempts. Please wait a few minutes.' :
+        c.includes('network') ? 'No internet connection.' : 'Wrong email or password.', 'err');
+    $('go').disabled = false;
+  }
+});
+
+$('reset').onclick = async () => {
+  const em = $('email').value.trim();
+  if (!em) { say('Type your email first, then press "Forgot password?"', 'err'); return; }
+  try { await sendPasswordResetEmail(auth, em); } catch (e) {}
+  say('If this email has an account, a reset link has been sent.', 'ok');
+};
+</script>
 </body>
 </html>

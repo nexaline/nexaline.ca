@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1f3a">
+<title>Dashboard | Nexa Line Ltd</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1f3a'/%3E%3Cpath d='M18 16 L46 48 M46 16 L18 48' stroke='%23f58220' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1f3a;--navy2:#13305a;--orange:#f58220;--sky:#5fb4e6;--ink:#14213a;--muted:#5b6678;--line:#e3e8ef;--bg:#f3f6fa;--ok:#1e8449;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:15px}
+button{font:inherit;cursor:pointer}
+#gate{position:fixed;inset:0;display:grid;place-items:center;background:var(--navy);color:#fff;z-index:50;font-weight:600}
+/* layout */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--navy);color:#cfdbea;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.brand{font-family:Montserrat,sans-serif;padding:0 10px 22px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:14px}
+.brand .n{font-weight:800;font-size:1.45rem;color:#fff}.brand .n b{color:var(--orange)}
+.brand .l{font-weight:700;color:var(--sky);letter-spacing:.2em;font-size:.85rem;margin-left:5px}
+.brand small{display:block;font:500 .72rem Inter;color:#8ea0b8;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+nav.side button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:0;background:none;color:inherit;border-radius:8px;text-align:left;font-weight:500}
+nav.side button:hover{background:rgba(255,255,255,.06)}
+nav.side button.on{background:rgba(245,130,32,.16);color:#fff}
+nav.side svg,.tabbar svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.who{margin-top:auto;font-size:.8rem;color:#8ea0b8;padding:12px 10px 0;border-top:1px solid rgba(255,255,255,.1);word-break:break-all}
+.who button{margin-top:8px;background:none;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:6px;padding:6px 12px;font-size:.8rem}
+main{padding:26px 28px 40px;min-width:0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.top h1{font:800 1.5rem Montserrat,sans-serif;color:var(--navy)}
+.top .sub{color:var(--muted);font-size:.9rem}
+select,input,textarea{font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfd8e3;border-radius:8px;background:#fff;color:var(--ink);width:100%}
+.yearpick{width:auto}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:600;background:var(--orange);color:#fff;white-space:nowrap}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid #cfd8e3}
+.btn.sm{padding:6px 10px;font-size:.82rem}
+/* cards */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.kpi .lab{font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi .val{font:800 1.55rem Montserrat,sans-serif;color:var(--navy);margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .hint{font-size:.8rem;color:var(--muted);margin-top:2px}
+.kpi.pos .val{color:var(--ok)}.kpi.neg .val{color:var(--bad)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.panel h2{font:700 1.02rem Montserrat,sans-serif;color:var(--navy);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:#e8f4fc;color:#1a6ea3;text-transform:uppercase;letter-spacing:.04em}
+.tag.o{background:#fff1e4;color:#b55a0c}.tag.g{background:#e6f5ec;color:var(--ok)}
+.empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:.9rem}
+.act{display:flex;gap:6px;justify-content:flex-end}
+.act button{background:none;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:.78rem;color:var(--navy)}
+.act button.del{color:var(--bad)}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.link{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--ink)}
+.link b{display:block;color:var(--navy)}.link span{font-size:.85rem;color:var(--muted)}
+.link:hover{border-color:var(--orange)}
+.feed li{list-style:none;display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.feed li:last-child{border:0}.feed small{color:var(--muted);display:block}
+/* cards view for tables on phone */
+.cards{display:none}
+.citem{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.citem .r1{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+.citem .r2{color:var(--muted);font-size:.85rem;margin-top:2px}
+.citem .act{margin-top:8px;justify-content:flex-start}
+/* modal */
+dialog{border:0;border-radius:16px;padding:0;width:min(520px,calc(100vw - 24px));max-height:calc(100vh - 24px);box-shadow:0 30px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(11,31,58,.55)}
+.mhead{padding:16px 20px;background:var(--navy);color:#fff;font:700 1.05rem Montserrat,sans-serif;display:flex;justify-content:space-between;align-items:center}
+.mhead button{background:none;border:0;color:#fff;font-size:1.4rem;line-height:1;padding:4px 8px}
+.mbody{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mbody label{font-size:.8rem;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+.mbody .full{grid-column:1/-1}
+.mfoot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:#fff}
+.calc{grid-column:1/-1;background:var(--bg);border-radius:8px;padding:10px 12px;font-weight:600;color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;font-size:.9rem;opacity:0;transition:.25s;pointer-events:none;z-index:60}
+.toast.show{opacity:1}
+.tabbar{display:none}
+section.view{display:none}section.view.on{display:block}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.links{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  aside{display:none}
+  main{padding:16px 14px calc(90px + env(safe-area-inset-bottom))}
+  .mtop{display:flex!important}
+  .top h1{font-size:1.25rem}
+  .grid2{grid-template-columns:1fr}
+  .kpis{gap:10px}.kpi{padding:14px}.kpi .val{font-size:1.25rem}
+  .tablewrap{display:none}.cards{display:block}
+  .links{grid-template-columns:1fr}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--navy);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:20;justify-content:space-around}
+  .tabbar button{flex:1;background:none;border:0;color:#8ea0b8;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;padding:6px 0;min-height:50px}
+  .tabbar button.on{color:var(--orange)}
+  .mbody{grid-template-columns:1fr}
+}
+.mtop{display:none;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;margin:-16px -14px 16px;padding:12px 14px}
+.mtop .brand{border:0;padding:0;margin:0}
+.mtop button{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div id="gate">Checking sign-in…</div>
+
+<div class="app">
+  <aside>
+    <div class="brand"><span class="n">NE<b>X</b>A</span><span class="l">LINE</span><small>Owner dashboard</small></div>
+    <nav class="side" id="sidenav"></nav>
+    <div class="who"><span id="whoami"></span><br><button id="out1">Sign out</button></div>
+  </aside>
+
+  <main>
+    <div class="mtop"><div class="brand"><span class="n">NE<b>X</b>A</span><span class="l">LINE</span></div><button id="out2">Sign out</button></div>
+
+    <div class="top">
+      <div><h1 id="title">Overview</h1><div class="sub" id="subtitle"></div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select class="yearpick" id="year" aria-label="Year"></select>
+        <button class="btn" id="addbtn">+ Add</button>
+      </div>
+    </div>
+
+    <section class="view" id="v-overview">
+      <div class="kpis" id="kpis"></div>
+      <div class="grid2">
+        <div class="panel"><h2>Recent activity</h2><ul class="feed" id="feed"></ul></div>
+        <div class="panel"><h2>By company <span class="sub" style="font:500 .8rem Inter">this year</span></h2><div id="bycompany"></div></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-companies"><div class="panel"><h2>Companies</h2><div id="t-companies"></div></div></section>
+    <section class="view" id="v-assets"><div class="panel"><h2>Assets</h2><div id="t-assets"></div></div></section>
+    <section class="view" id="v-leasing"><div class="panel"><h2>Lease log <span class="sub" style="font:500 .8rem Inter">km driven on Nexa Line equipment</span></h2><div id="t-leases"></div></div></section>
+    <section class="view" id="v-expenses"><div class="panel"><h2>Expenses</h2><div id="t-expenses"></div></div></section>
+
+    <section class="view" id="v-links">
+      <div class="links">
+        <a class="link" href="https://nexahorsetransport.ca" target="_blank" rel="noopener"><b>Nexa Horse Transport</b><span>Public website and quote calculator</span></a>
+        <a class="link" href="https://nexaline.ca" target="_blank" rel="noopener"><b>nexaline.ca</b><span>Holding company website</span></a>
+        <a class="link" href="https://qbo.intuit.com" target="_blank" rel="noopener"><b>QuickBooks</b><span>Accounting</span></a>
+        <a class="link" href="https://console.twilio.com" target="_blank" rel="noopener"><b>Twilio</b><span>1-844-491-NEXA phone line</span></a>
+        <a class="link" href="https://github.com/nexaline" target="_blank" rel="noopener"><b>GitHub</b><span>Website code</span></a>
+        <a class="link" href="https://console.firebase.google.com/project/nexa-line" target="_blank" rel="noopener"><b>Firebase</b><span>Dashboard data and logins</span></a>
+        <a class="link" href="https://ap.www.namecheap.com/domains/list/" target="_blank" rel="noopener"><b>Namecheap</b><span>Domains and email forwarding</span></a>
+        <a class="link" href="https://www.youtube.com/@nexahorsetransport" target="_blank" rel="noopener"><b>YouTube</b><span>Nexa Horse Transport channel</span></a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabbar" id="tabbar"></nav>
+
+<dialog id="dlg">
+  <form method="dialog" id="dform">
+    <div class="mhead"><span id="dtitle">Add</span><button type="button" id="dclose" aria-label="Close">&times;</button></div>
+    <div class="mbody" id="dbody"></div>
+    <div class="mfoot"><button type="button" class="btn ghost" id="dcancel">Cancel</button><button class="btn" id="dsave" type="submit">Save</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { auth, db } from "./js/firebase-init.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, onSnapshot, addDoc, setDoc, deleteDoc, doc, getDocs, serverTimestamp, writeBatch }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD',maximumFractionDigits:0}).format(n||0);
+const money2 = n => new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n||0);
+const num = n => new Intl.NumberFormat('en-CA').format(Math.round(n||0));
+const today = () => new Date().toISOString().slice(0,10);
+const toast = t => { const el=$('toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); };
+
+/* ---------- icons + views ---------- */
+const I = {
+  overview:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',
+  companies:'<path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/>',
+  assets:'<path d="M3 16V7h11v9M14 10h4l3 3v3h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
+  leasing:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  expenses:'<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .7V2l-1 .7-3-2-3 2-3-2-3 2-3-2z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  links:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'
+};
+const VIEWS = [
+  ['overview','Overview'],['companies','Companies'],['assets','Assets'],
+  ['leasing','Leasing'],['expenses','Expenses'],['links','Links']
+];
+let current = 'overview';
+function buildNav(){
+  const html = (cls) => VIEWS.map(([k,l]) => `<button data-v="${k}" class="${k===current?'on':''}"><svg viewBox="0 0 24 24">${I[k]}</svg>${cls?'<span>'+l+'</span>':l}</button>`).join('');
+  $('sidenav').innerHTML = html(false); $('tabbar').innerHTML = html(true);
+  document.querySelectorAll('[data-v]').forEach(b => b.onclick = () => show(b.dataset.v));
+}
+function show(v){
+  current = v; buildNav();
+  document.querySelectorAll('section.view').forEach(s => s.classList.toggle('on', s.id==='v-'+v));
+  $('title').textContent = VIEWS.find(x=>x[0]===v)[1];
+  const addable = {companies:1,assets:1,leasing:1,expenses:1,overview:1};
+  $('addbtn').style.display = addable[v] ? '' : 'none';
+  $('year').style.display = (v==='overview'||v==='leasing'||v==='expenses') ? '' : 'none';
+  $('subtitle').textContent = v==='overview' ? 'Nexa Line Ltd and group companies' : '';
+  window.scrollTo(0,0); render();
+}
+
+/* ---------- data schemas ---------- */
+const COMPANY_TYPES = ['Holding company','Operating company','Brand / trade name','Planned'];
+const STATUSES = ['Active','Planned','Inactive'];
+const EXP_CATS = ['Fuel','Maintenance & repairs','Insurance','Registration & licences','Parts & supplies','Shavings & hay','Yard / parking','Phone & internet','Software & websites','Professional fees','Advertising','Driver wages','Meals & travel','Bank fees','Equipment purchase','Other'];
+
+const S = {
+  companies:{ title:'company', fields:[
+    {k:'name',l:'Company name',req:1,full:1},
+    {k:'type',l:'Type',opts:COMPANY_TYPES},
+    {k:'status',l:'Status',opts:STATUSES},
+    {k:'website',l:'Website',full:1,ph:'https://'},
+    {k:'notes',l:'Notes',area:1,full:1}]},
+  assets:{ title:'asset', fields:[
+    {k:'name',l:'Asset name',req:1,full:1,ph:'e.g. 2026 Ford F-350'},
+    {k:'kind',l:'Type',opts:['Truck','Trailer','Aircraft','Vehicle','Equipment','Property','Other']},
+    {k:'year',l:'Year',type:'number'},
+    {k:'price',l:'Purchase price (CA$)',type:'number',step:'0.01'},
+    {k:'purchased',l:'Purchase date',type:'date'},
+    {k:'leasedTo',l:'Leased to',company:1},
+    {k:'rate',l:'Lease rate (CA$/km)',type:'number',step:'0.01'},
+    {k:'odometer',l:'Odometer (km)',type:'number'},
+    {k:'notes',l:'Notes',area:1,full:1}]},
+  leases:{ title:'lease km', fields:[
+    {k:'date',l:'Date',type:'date',req:1,def:today},
+    {k:'assetId',l:'Asset',asset:1,req:1},
+    {k:'company',l:'Leased by',company:1},
+    {k:'km',l:'Kilometres',type:'number',req:1},
+    {k:'rate',l:'Rate (CA$/km)',type:'number',step:'0.01'},
+    {k:'notes',l:'Trip / notes',full:1}]},
+  expenses:{ title:'expense', fields:[
+    {k:'date',l:'Date',type:'date',req:1,def:today},
+    {k:'company',l:'Paid by company',company:1,req:1},
+    {k:'category',l:'Category',opts:EXP_CATS},
+    {k:'amount',l:'Amount before GST (CA$)',type:'number',step:'0.01',req:1},
+    {k:'gst',l:'GST (CA$)',type:'number',step:'0.01'},
+    {k:'vendor',l:'Vendor',ph:'e.g. Ford dealer'},
+    {k:'description',l:'Description',full:1}]}
+};
+
+/* ---------- live data ---------- */
+const D = { companies:[], assets:[], leases:[], expenses:[] };
+const assetName = id => (D.assets.find(a=>a.id===id)||{}).name || '—';
+const yearOf = d => (d||'').slice(0,4);
+const selYear = () => $('year').value;
+
+function listen(){
+  for (const c of Object.keys(D)) {
+    onSnapshot(collection(db, c), snap => {
+      D[c] = snap.docs.map(d => ({id:d.id, ...d.data()}));
+      if (c==='leases'||c==='expenses') D[c].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+      else D[c].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+      fillYears(); render();
+    }, err => { console.error(err); if (err.code==='permission-denied') denied(); });
+  }
+}
+function denied(){
+  $('gate').style.display='grid';
+  $('gate').innerHTML = '<div style="text-align:center;padding:20px">This account does not have access to the dashboard.<br><br><button class="btn" id="dout">Sign out</button></div>';
+  $('dout').onclick = () => signOut(auth);
+}
+function fillYears(){
+  const ys = new Set([String(new Date().getFullYear())]);
+  [...D.leases, ...D.expenses].forEach(r => r.date && ys.add(yearOf(r.date)));
+  const cur = $('year').value || String(new Date().getFullYear());
+  $('year').innerHTML = [...ys].sort().reverse().map(y=>`<option${y===cur?' selected':''}>${y}</option>`).join('') + `<option value="all"${cur==='all'?' selected':''}>All years</option>`;
+}
+const inYear = r => selYear()==='all' || yearOf(r.date)===selYear();
+
+/* ---------- rendering ---------- */
+function render(){
+  if (current==='overview') renderOverview();
+  if (current==='companies') renderTable('companies', $('t-companies'), [
+    ['Company', r=>`<b>${esc(r.name)}</b>${r.website?`<br><a href="${esc(r.website)}" target="_blank" rel="noopener" style="font-size:.82rem">${esc(r.website.replace(/^https?:\/\//,''))}</a>`:''}`],
+    ['Type', r=>esc(r.type)],
+    ['Status', r=>`<span class="tag ${r.status==='Active'?'g':'o'}">${esc(r.status||'—')}</span>`],
+    ['Notes', r=>esc(r.notes)]
+  ], r=>({t:r.name, m:`${r.type||''} · ${r.status||''}`, v:''}));
+  if (current==='assets') renderTable('assets', $('t-assets'), [
+    ['Asset', r=>`<b>${esc(r.name)}</b><br><span style="color:var(--muted);font-size:.82rem">${esc(r.kind||'')}</span>`],
+    ['Purchase', r=>`${r.price?money(r.price):'—'}<br><span style="color:var(--muted);font-size:.82rem">${esc(r.purchased||'')}</span>`, 'num'],
+    ['Leased to', r=>esc(r.leasedTo||'—')],
+    ['Rate', r=>r.rate?money2(r.rate)+'/km':'—','num'],
+    ['Lease km', r=>num(D.leases.filter(l=>l.assetId===r.id).reduce((s,l)=>s+(+l.km||0),0)),'num'],
+    ['Lease income', r=>money(D.leases.filter(l=>l.assetId===r.id).reduce((s,l)=>s+(+l.amount||0),0)),'num']
+  ], r=>({t:r.name, m:`${r.leasedTo?'Leased to '+r.leasedTo:'Not leased'}${r.rate?' · '+money2(r.rate)+'/km':''}`, v:r.price?money(r.price):''}));
+  if (current==='leasing') renderTable('leases', $('t-leases'), [
+    ['Date', r=>esc(r.date)], ['Asset', r=>esc(assetName(r.assetId))], ['Leased by', r=>esc(r.company||'—')],
+    ['Km', r=>num(r.km),'num'], ['Rate', r=>money2(r.rate)+'/km','num'], ['Amount', r=>`<b>${money2(r.amount)}</b>`,'num'], ['Notes', r=>esc(r.notes)]
+  ], r=>({t:assetName(r.assetId), m:`${r.date} · ${num(r.km)} km × ${money2(r.rate)}${r.company?' · '+r.company:''}`, v:money2(r.amount)}), inYear);
+  if (current==='expenses') renderTable('expenses', $('t-expenses'), [
+    ['Date', r=>esc(r.date)], ['Company', r=>esc(r.company)], ['Category', r=>esc(r.category)],
+    ['Description', r=>esc([r.vendor, r.description].filter(Boolean).join(' — '))],
+    ['Amount', r=>money2(r.amount),'num'], ['GST', r=>money2(r.gst),'num']
+  ], r=>({t:r.category||'Expense', m:`${r.date} · ${r.company||''}${r.vendor?' · '+r.vendor:''}${r.description?' · '+r.description:''}`, v:money2(r.amount)}), inYear);
+}
+
+function renderTable(coll, el, cols, card, filter){
+  const rows = D[coll].filter(filter || (()=>true));
+  if (!rows.length) { el.innerHTML = `<div class="empty">Nothing here yet. Press <b>+ Add</b> to add the first one.</div>`; return; }
+  const acts = r => `<div class="act"><button data-edit="${coll}:${r.id}">Edit</button><button class="del" data-del="${coll}:${r.id}">Delete</button></div>`;
+  let total = '';
+  if (coll==='leases'||coll==='expenses'){
+    const sum = rows.reduce((s,r)=>s+(+r.amount||0),0);
+    total = `<div style="text-align:right;font-weight:700;padding:10px 8px 0;color:var(--navy)">Total: ${money2(sum)}${coll==='leases'?' · '+num(rows.reduce((s,r)=>s+(+r.km||0),0))+' km':''}</div>`;
+  }
+  el.innerHTML = `<div class="tablewrap" style="overflow-x:auto"><table><thead><tr>${cols.map(c=>`<th class="${c[2]||''}">${c[0]}</th>`).join('')}<th></th></tr></thead><tbody>${
+    rows.map(r=>`<tr>${cols.map(c=>`<td class="${c[2]||''}">${c[1](r)}</td>`).join('')}<td>${acts(r)}</td></tr>`).join('')
+  }</tbody></table></div><div class="cards">${
+    rows.map(r=>{const c=card(r); return `<div class="citem"><div class="r1"><span>${esc(c.t)}</span><span>${esc(c.v)}</span></div><div class="r2">${esc(c.m)}</div>${acts(r)}</div>`}).join('')
+  }</div>${total}`;
+  el.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const [c,id]=b.dataset.edit.split(':'); openForm(c, D[c].find(x=>x.id===id));});
+  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+    const [c,id]=b.dataset.del.split(':'); if(!confirm('Delete this '+S[c].title+'? This cannot be undone.')) return;
+    await deleteDoc(doc(db,c,id)); toast('Deleted');
+  });
+}
+
+function renderOverview(){
+  const L = D.leases.filter(inYear), E = D.expenses.filter(inYear);
+  const income = L.reduce((s,r)=>s+(+r.amount||0),0);
+  const km = L.reduce((s,r)=>s+(+r.km||0),0);
+  const exp = E.reduce((s,r)=>s+(+r.amount||0),0);
+  const gst = E.reduce((s,r)=>s+(+r.gst||0),0);
+  const assetVal = D.assets.reduce((s,r)=>s+(+r.price||0),0);
+  const net = income - exp;
+  const yl = selYear()==='all' ? 'all years' : selYear();
+  $('kpis').innerHTML = `
+    <div class="kpi"><div class="lab">Assets owned</div><div class="val">${money(assetVal)}</div><div class="hint">${D.assets.length} asset${D.assets.length===1?'':'s'} · purchase price</div></div>
+    <div class="kpi"><div class="lab">Lease income</div><div class="val">${money(income)}</div><div class="hint">${num(km)} km · ${yl}</div></div>
+    <div class="kpi"><div class="lab">Expenses</div><div class="val">${money(exp)}</div><div class="hint">+ ${money(gst)} GST paid · ${yl}</div></div>
+    <div class="kpi ${net>=0?'pos':'neg'}"><div class="lab">Net (income − expenses)</div><div class="val">${money(net)}</div><div class="hint">before tax and depreciation</div></div>`;
+  const feed = [...L.map(r=>({d:r.date,t:`Lease: ${assetName(r.assetId)}`,s:`${num(r.km)} km · ${r.company||''}`,v:'+'+money2(r.amount),c:'var(--ok)'})),
+                ...E.map(r=>({d:r.date,t:r.category||'Expense',s:`${r.company||''}${r.vendor?' · '+r.vendor:''}`,v:'−'+money2(r.amount),c:'var(--bad)'}))]
+               .sort((a,b)=>(b.d||'').localeCompare(a.d||'')).slice(0,8);
+  $('feed').innerHTML = feed.length ? feed.map(f=>`<li><div><b>${esc(f.t)}</b><small>${esc(f.d)} · ${esc(f.s)}</small></div><b style="color:${f.c};white-space:nowrap">${f.v}</b></li>`).join('')
+    : '<li class="empty" style="display:block">No activity yet. Add lease km or an expense with <b>+ Add</b>.</li>';
+  const names = [...new Set([...D.companies.map(c=>c.name), ...E.map(e=>e.company), ...L.map(l=>l.company)].filter(Boolean))];
+  const rows = names.map(n=>({n, e:E.filter(x=>x.company===n).reduce((s,r)=>s+(+r.amount||0),0), l:L.filter(x=>x.company===n).reduce((s,r)=>s+(+r.amount||0),0)}));
+  $('bycompany').innerHTML = rows.length ? `<table><thead><tr><th>Company</th><th class="num">Expenses</th><th class="num">Lease paid</th></tr></thead><tbody>${
+    rows.map(r=>`<tr><td>${esc(r.n)}</td><td class="num">${money(r.e)}</td><td class="num">${money(r.l)}</td></tr>`).join('')}</tbody></table>` : '<div class="empty">No companies yet.</div>';
+}
+
+/* ---------- add / edit form ---------- */
+let editing = null;
+function openForm(coll, rec){
+  editing = {coll, id: rec?.id || null};
+  $('dtitle').textContent = (rec?'Edit ':'Add ') + S[coll].title;
+  const compOpts = D.companies.map(c=>c.name);
+  $('dbody').innerHTML = S[coll].fields.map(f=>{
+    const v = rec ? (rec[f.k] ?? '') : (f.def ? f.def() : '');
+    let input;
+    if (f.opts || f.company || f.asset){
+      const opts = f.asset ? D.assets.map(a=>[a.id,a.name]) : (f.company ? compOpts : f.opts).map(o=>[o,o]);
+      input = `<select name="${f.k}" ${f.req?'required':''}><option value="">— choose —</option>${opts.map(([val,lab])=>`<option value="${esc(val)}"${String(val)===String(v)?' selected':''}>${esc(lab)}</option>`).join('')}</select>`;
+    } else if (f.area) input = `<textarea name="${f.k}" rows="3">${esc(v)}</textarea>`;
+    else input = `<input name="${f.k}" type="${f.type||'text'}" ${f.step?`step="${f.step}"`:''} ${f.type==='number'?'inputmode="decimal" min="0"':''} ${f.req?'required':''} placeholder="${esc(f.ph||'')}" value="${esc(v)}">`;
+    return `<div class="${f.full||f.area?'full':''}"><label>${f.l}${f.req?' *':''}</label>${input}</div>`;
+  }).join('') + (coll==='leases' ? '<div class="calc" id="calc"></div>' : '') + (coll==='expenses' ? '<div class="full" style="font-size:.8rem;color:var(--muted)">Tip: keep the receipt. GST is 5% in Alberta.</div>' : '');
+  if (coll==='leases') {
+    const f = $('dform');
+    const upd = () => { const km=+f.km.value||0, rate=+f.rate.value||0; $('calc').textContent = `Amount: ${num(km)} km × ${money2(rate)} = ${money2(km*rate)}`; };
+    f.assetId.onchange = () => { const a = D.assets.find(x=>x.id===f.assetId.value); if (a){ if(a.rate && !f.rate.value) f.rate.value=a.rate; if(a.leasedTo && !f.company.value) f.company.value=a.leasedTo; } upd(); };
+    f.km.oninput = f.rate.oninput = upd; upd();
+  }
+  if (coll==='expenses') {
+    const f = $('dform');
+    f.amount.addEventListener('change', () => { if (!f.gst.value && f.amount.value) f.gst.value = (Math.round(f.amount.value*5)/100).toFixed(2); });
+  }
+  $('dlg').showModal();
+}
+$('dclose').onclick = $('dcancel').onclick = () => $('dlg').close();
+$('dform').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = $('dform'), {coll, id} = editing, data = {};
+  for (const fd of S[coll].fields){
+    let v = f[fd.k].value.trim();
+    if (fd.type==='number') v = v==='' ? null : +v;
+    data[fd.k] = v;
+  }
+  if (coll==='leases') data.amount = Math.round((data.km||0)*(data.rate||0)*100)/100;
+  data.updatedAt = serverTimestamp(); data.updatedBy = auth.currentUser.email;
+  $('dsave').disabled = true;
+  try {
+    if (id) await setDoc(doc(db,coll,id), data, {merge:true});
+    else { data.createdAt = serverTimestamp(); await addDoc(collection(db,coll), data); }
+    $('dlg').close(); toast('Saved');
+  } catch (err) { alert('Could not save: ' + (err.code||err.message)); }
+  $('dsave').disabled = false;
+});
+$('addbtn').onclick = () => {
+  const map = {companies:'companies',assets:'assets',leasing:'leases',expenses:'expenses'};
+  if (current==='overview') { quickPick(); return; }
+  openForm(map[current]);
+};
+function quickPick(){
+  $('dtitle').textContent = 'What do you want to add?';
+  $('dbody').innerHTML = [['expenses','Expense','A bill, fuel, repair, insurance…'],['leases','Lease km','Km driven on Nexa Line equipment'],['assets','Asset','Truck, trailer, aircraft…'],['companies','Company','A new company or brand']]
+    .map(([c,t,s])=>`<button type="button" class="link full" data-q="${c}" style="text-align:left;cursor:pointer"><b>${t}</b><span>${s}</span></button>`).join('');
+  $('dsave').style.display='none';
+  $('dbody').querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{ $('dsave').style.display=''; $('dlg').close(); openForm(b.dataset.q); });
+  $('dlg').showModal();
+}
+$('dlg').addEventListener('close', ()=>{ $('dsave').style.display=''; });
+$('year').onchange = render;
+
+/* ---------- first-time setup ---------- */
+async function seedIfEmpty(){
+  const c = await getDocs(collection(db,'companies'));
+  if (!c.empty) return;
+  const b = writeBatch(db), now = serverTimestamp();
+  const add = (coll, data) => b.set(doc(collection(db,coll)), {...data, createdAt:now, updatedAt:now});
+  add('companies',{name:'Nexa Line Ltd',type:'Holding company',status:'Active',website:'https://nexaline.ca',notes:'Alberta holding and investment company. Owns all equipment.'});
+  add('companies',{name:'Nexa Transport Ltd',type:'Operating company',status:'Planned',website:'',notes:'Operating company for transportation brands. Leases equipment from Nexa Line.'});
+  add('companies',{name:'Nexa Horse Transport',type:'Brand / trade name',status:'Active',website:'https://nexahorsetransport.ca',notes:'Horse transportation brand.'});
+  add('assets',{name:'2026 Ford F-350 Dually XLT',kind:'Truck',year:2026,price:94000,purchased:'',leasedTo:'Nexa Transport Ltd',rate:2,odometer:null,notes:'Commercial maintenance at Ford dealer.'});
+  add('assets',{name:'2026 Four Star 6+1 Straight-Load Trailer',kind:'Trailer',year:2026,price:38500,purchased:'',leasedTo:'Nexa Transport Ltd',rate:null,notes:'Usual setup 5+1. Lease rate included with truck for now.'});
+  await b.commit();
+}
+
+/* ---------- auth gate ---------- */
+const doOut = () => signOut(auth).then(()=>location.replace('login.html'));
+$('out1').onclick = $('out2').onclick = doOut;
+onAuthStateChanged(auth, async u => {
+  if (!u) { location.replace('login.html'); return; }
+  $('whoami').textContent = u.email;
+  try { await seedIfEmpty(); } catch (e) { if (e.code==='permission-denied') { denied(); return; } }
+  $('gate').style.display = 'none';
+  buildNav(); fillYears(); show('overview'); listen();
+});
+</script>
+</body>
+</html>
